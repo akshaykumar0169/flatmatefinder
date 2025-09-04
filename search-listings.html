@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flatmate Listings</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        body {
+            min-height: 100vh;
+            margin: 0;
+            background: #fff;
+            /* solid white as requested */
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 5vh;
+        }
+
+        .glass-card {
+            width: 100%;
+            max-width: 880px;
+            padding: 2.2rem 2rem 2.8rem 2rem;
+            border-radius: 22px;
+            background: rgba(255, 255, 255, 0.65);
+            box-shadow: 0 8px 32px rgba(60, 60, 110, 0.18);
+            backdrop-filter: blur(12px);
+            border: 1.5px solid rgba(220, 220, 230, 0.27);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .glass-card h2 {
+            color: #49486a;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 1.7rem;
+            text-shadow: 0 2px 12px #fff5;
+        }
+
+        .form-grid {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 1.4rem 2rem;
+            margin-bottom: 2.2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: #5c5c7b;
+        }
+
+        input[type="number"],
+        select {
+            padding: 0.7rem 1rem;
+            border-radius: 9px;
+            border: 1.3px solid #e2e2ee;
+            background: rgba(255, 255, 255, 0.9);
+            outline: none;
+            font-size: 1rem;
+            transition: border 0.2s;
+        }
+
+        input[type="number"]:focus,
+        select:focus {
+            border: 1.3px solid #a488ff;
+            background: #fff;
+        }
+
+        .lifestyle-group .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            margin-top: 0.1rem;
+            gap: 4px;
+        }
+
+        .checkbox-group label {
+            font-weight: 400;
+            color: #665899;
+            font-size: 0.97rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .search-btn {
+            margin-top: 1.5rem;
+            padding: 0.95rem 0;
+            width: 90%;
+            max-width: 350px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(90deg, #a488ff 0%, #37b6ff 100%);
+            color: #fff;
+            font-size: 1.18rem;
+            font-weight: 600;
+            box-shadow: 0 3px 20px 0 rgba(96, 97, 200, 0.13);
+            cursor: pointer;
+            letter-spacing: .2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.2s, transform 0.12s;
+        }
+
+        .search-btn:hover {
+            background: linear-gradient(90deg, #37ff7a 0%, #31a806 100%);
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 8px 32px rgba(40, 110, 255, 0.19);
+        }
+
+        @media (max-width: 700px) {
+            .glass-card {
+                padding: 1.3rem 0.9rem;
+            }
+
+            .form-grid {
+                gap: 1rem;
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="navbar-left">
+            <a href="#" class="logo">
+                <span class="home-icon">
+                    <!-- Inline SVG Home Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                        class="bi bi-house-door-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5" />
+                    </svg>
+                </span>
+                <span class="logo-text">Flatmate <span class="logo-bold">Finder</span></span>
+            </a>
+        </div>
+        <ul id="navbar-links">
+            <li id="login-link"><a href="/user-dashboard.html">User Dashboard</a></li>
+
+            <!-- Hidden until login -->
+            <li id="profile-menu" class="profile-menu" style="display:none;">
+                <div class="profile-icon" id="profile-icon">U</div>
+                <div class="profile-dropdown">
+                    <a href="profile.html">My Profile</a>
+                    <a href="my-posts.html">My Posts</a>
+                    <a href="login.html" id="logout-btn">Logout</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <form class="glass-card" id="filterForm" onsubmit="event.preventDefault(); filterListings();">
+            <h2>Search Filters</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <select id="location">
+                        <option value="">All Locations</option>
+                        <option value="Noida">Noida</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Gurgaon">Gurgaon</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="minBudget">Min Budget (₹)</label>
+                    <input type="number" id="minBudget" placeholder="5000">
+                </div>
+                <div class="form-group">
+                    <label for="maxBudget">Max Budget (₹)</label>
+                    <input type="number" id="maxBudget" placeholder="15000">
+                </div>
+                <div class="form-group">
+                    <label for="furnishing">Furnishing</label>
+                    <select id="furnishing">
+                        <option value="">Any</option>
+                        <option value="raw">Raw</option>
+                        <option value="semi">Semi-Furnished</option>
+                        <option value="fully">Fully-Furnished</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender Preference</label>
+                    <select id="gender">
+                        <option value="">Any</option>
+                        <option value="only-boys">Only Boys</option>
+                        <option value="only-girls">Only Girls</option>
+                        <option value="both">Both</option>
+                    </select>
+                </div>
+                <div class="form-group lifestyle-group">
+                    <label>Lifestyle</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" value="vegetarian" class="lifestyle"> Vegetarian</label>
+                        <label><input type="checkbox" value="non-vegetarian" class="lifestyle"> Non-Vegetarian</label>
+                        <label><input type="checkbox" value="smoke" class="lifestyle"> Smoking OK</label>
+                        <label><input type="checkbox" value="drink" class="lifestyle"> Drinking OK</label>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="search-btn">
+                <span>🔍</span> Search Properties
+            </button>
+        </form>
+    </div>
+    <div class="results" id="results"></div>
+    <script src="app.js">
+        const listings = [
+            {
+                location: "Noida",
+                rent: 7000,
+                furnishing: "semi",
+                gender: "only-boys",
+                preferences: ["vegetarian", "non-vegetarian"]
+            },
+            {
+                location: "Delhi",
+                rent: 8500,
+                furnishing: "fully",
+                gender: "only-girls",
+                preferences: ["vegetarian", "drink"]
+            },
+            {
+                location: "Noida",
+                rent: 6000,
+                furnishing: "raw",
+                gender: "both",
+                preferences: ["smoke", "non-vegetarian"]
+            },
+        ];
+
+        function filterListings() {
+            const location = document.getElementById("location").value;
+            const min = parseInt(document.getElementById("minBudget").value) || 0;
+            const max = parseInt(document.getElementById("maxBudget").value) || Infinity;
+            const furnishing = document.getElementById("furnishing").value;
+            const gender = document.getElementById("gender").value;
+
+            // Get checked lifestyle preferences
+            const prefs = Array.from(document.querySelectorAll('.lifestyle:checked')).map(c => c.value);
+
+            const filtered = listings.filter(item => {
+                return (
+                    (!location || item.location === location) &&
+                    item.rent >= min &&
+                    item.rent <= max &&
+                    (!furnishing || item.furnishing === furnishing) &&
+                    (!gender || item.gender === gender) &&
+                    prefs.every(p => item.preferences.includes(p))
+                );
+            });
+
+            const resultsDiv = document.getElementById("results");
+            resultsDiv.innerHTML = '';
+
+            if (filtered.length === 0) {
+                resultsDiv.innerHTML = `<p style="margin:3rem 0 0 0; color:#d24141; font-weight:700; text-align:center;">No listings found based on selected filters.</p>`;
+                return;
+            }
+
+            // Show results as nice glass cards (for demo, simple cards)
+            filtered.forEach(item => {
+                const card = document.createElement("div");
+                card.className = "glass-card";
+                card.style.margin = "2rem auto 0 auto";
+                card.style.maxWidth = "500px";
+                card.innerHTML = `
+      <h3 style="color:#599fff;">${item.location}</h3>
+      <p><b>Rent:</b> ₹${item.rent}</p>
+      <p><b>Furnishing:</b> ${capitalize(item.furnishing)}</p>
+      <p><b>Preferred Gender:</b> ${formatGender(item.gender)}</p>
+      <p><b>Preferences:</b> ${item.preferences.join(", ")}</p>
+    `;
+                resultsDiv.appendChild(card);
+            });
+        }
+
+        function capitalize(str) {
+            if (!str) return "";
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        function formatGender(g) {
+            if (g === "only-boys") return "Only Boys";
+            if (g === "only-girls") return "Only Girls";
+            if (g === "both") return "Both";
+            return g;
+        }
+
+    </script>
+</body>
+
+</html>

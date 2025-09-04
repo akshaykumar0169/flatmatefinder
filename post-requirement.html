@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Post Requirement | Flatmate Finder</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        body {
+            background: #f7fafc;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+        }
+
+        .requirement-container {
+            max-width: 550px;
+            margin: 38px auto;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 8px 24px rgba(30, 64, 175, 0.10);
+            padding: 34px 36px 20px 36px;
+        }
+
+        .flatmate-form h2 {
+            color: #1877f2;
+            text-align: center;
+            font-weight: 700;
+            margin-bottom: 22px;
+            font-size: 2rem;
+        }
+
+        .input-group {
+            margin-bottom: 22px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #184154;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .input-tip {
+            font-size: 0.89rem;
+            color: #888;
+            margin-left: 8px;
+            font-weight: 400;
+        }
+
+        .file-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        input[type="file"] {
+            padding: 6px;
+            border-radius: 7px;
+            border: 1.3px solid #e3e7ef;
+            background: #f5f7fa;
+            font-size: 1.02rem;
+            width: 118px;
+            transition: border 0.2s;
+        }
+
+        input[type="file"]:hover,
+        input[type="file"]:focus {
+            border-color: #1877f2;
+            background: #edf4fc;
+        }
+
+        input[type="number"],
+        input[type="text"],
+        select,
+        textarea {
+            padding: 12px;
+            font-size: 1.04rem;
+            border: 1.7px solid #e3e7ef;
+            border-radius: 9px;
+            outline: none;
+            background: #f7f9fd;
+            transition: border 0.19s, box-shadow 0.19s;
+            box-shadow: 0 1px 1px rgba(30, 64, 175, 0.04);
+        }
+
+        input[type="number"]:focus,
+        input[type="text"]:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #1877f2;
+            box-shadow: 0 2px 8px rgba(30, 64, 175, 0.11);
+        }
+
+        .prefs-options {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 7px;
+        }
+
+        .prefs-options label {
+            font-size: 1.05rem;
+            font-weight: 400;
+            color: #305069;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        input[type="checkbox"] {
+            accent-color: #1877f2;
+            margin-top: 1px;
+            transform: scale(1.15);
+        }
+
+        .submit-btn {
+            margin: 14px auto 2px auto;
+            background: #42b845;
+            color: #fff;
+            font-size: 1.11rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 34px;
+            cursor: pointer;
+            box-shadow: 0 2px 9px rgba(30, 64, 100, 0.08);
+            transition: background 0.19s, box-shadow 0.21s, transform 0.18s;
+            display: block;
+        }
+
+        .submit-btn:hover {
+            background: #30932F;
+            box-shadow: 0 7px 22px rgba(30, 64, 100, 0.08);
+            transform: translateY(-2px) scale(1.03);
+        }
+
+        #form-success {
+            text-align: center;
+            color: #30932F;
+            font-weight: 600;
+            font-size: 1.15rem;
+            margin: 10px 0;
+            display: none;
+        }
+
+        @media (max-width: 700px) {
+            .requirement-container {
+                max-width: 98vw;
+                padding: 12px 6vw 16px 6vw;
+            }
+
+            .flatmate-form h2 {
+                font-size: 1.15rem;
+            }
+        }
+
+        .img-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .preview-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid #e3e7ef;
+            margin-top: 6px;
+            box-shadow: 0 2px 8px rgba(30, 64, 175, 0.07);
+            background: #fafbfc;
+        }
+
+        input[type="text"]:invalid,
+        input[type="number"]:invalid {
+            border-color: #e86446;
+        }
+
+        select#city,
+        select#state {
+            padding: 12px;
+            font-size: 1.04rem;
+            border: 1.7px solid #e3e7ef;
+            border-radius: 9px;
+            background: #f7f9fd;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="navbar-left">
+            <a href="user-dashboard.html" class="logo">
+                <span class="home-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                        class="bi bi-house-door-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5" />
+                    </svg>
+                </span>
+                <span class="logo-text">Flatmate <span class="logo-text">Finder</span></span>
+            </a>
+        </div>
+
+        <ul id="navbar-links">
+            <li><a href="user-dashboard.html">Dashboard</a></li>
+        </ul>
+    </nav>
+
+    <div class="requirement-container">
+        <form class="flatmate-form" id="flatmateForm" enctype="multipart/form-data">
+            <h2>
+                <span style="font-size:1.8rem;">📝</span>
+                <span style="color:#1877f2;">Post Your Flatmate Requirement</span>
+            </h2>
+
+            <div class="input-group">
+                <label>Upload Images <span class="input-tip">(Only 3)</span></label>
+                <div class="file-row">
+                    <div class="img-upload">
+                        <input type="file" name="images" accept="image/*" id="img1" />
+                        <img id="preview1" class="preview-img" src="" alt="" style="display:none;" />
+                    </div>
+                    <div class="img-upload">
+                        <input type="file" name="images" accept="image/*" id="img2" />
+                        <img id="preview2" class="preview-img" src="" alt="" style="display:none;" />
+                    </div>
+                    <div class="img-upload">
+                        <input type="file" name="images" accept="image/*" id="img3" />
+                        <img id="preview3" class="preview-img" src="" alt="" style="display:none;" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="price">💰 Price / Rent (per month):</label>
+                <input type="number" id="price" name="price" placeholder="e.g. 6000" required />
+            </div>
+
+            <div class="input-group">
+                <label for="furnishing">🛋️ Furnishing:</label>
+                <select id="furnishing" name="furnishing" required>
+                    <option value="">-- Select --</option>
+                    <option>Unfurnished</option>
+                    <option>Semi-furnished</option>
+                    <option>Fully furnished</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="state">🗺️ State:</label>
+                <select id="state" name="state" required>
+                    <option value="">-- Select State --</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="city">🏙️ City:</label>
+                <select id="city" name="city" required>
+                    <option value="">-- Select City --</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="location">📍 Area / Location:</label>
+                <input type="text" id="location" name="location" placeholder="e.g. Sector 62, Noida" required />
+            </div>
+
+            <div class="input-group prefs">
+                <label>🧑‍🤝‍🧑 Roommate Preferences:</label>
+                <div class="prefs-options">
+                    <label><input type="checkbox" name="prefs" value="Vegetarian" /> Vegetarian</label>
+                    <label><input type="checkbox" name="prefs" value="Non-Vegetarian" /> Non-Vegetarian</label>
+                    <label><input type="checkbox" name="prefs" value="Smokes" /> Smokes</label>
+                    <label><input type="checkbox" name="prefs" value="Drinks" /> Drinks</label>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="gender">Preferred Roommate Gender:</label>
+                <select id="gender" name="gender" required>
+                    <option value="">-- Select --</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Any</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="notes">🗒️ Additional Notes:</label>
+                <textarea id="notes" name="notes" rows="2"
+                    placeholder="Any additional info or preferences..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit Requirement</button>
+            <div id="form-success"></div>
+        </form>
+    </div>
+
+    <script>
+        // State and City Data
+        const stateCityData = {
+            "Andaman and Nicobar Islands": ["Port Blair"],
+            "Haryana": ["Faridabad", "Gurgaon", "Hisar", "Rohtak", "Panipat", "Karnal", "Sonipat", "Yamunanagar", "Panchkula", "Bhiwani", "Bahadurgarh", "Jind", "Sirsa", "Thanesar", "Kaithal", "Palwal", "Rewari", "Hansi", "Narnaul", "Fatehabad", "Gohana", "Tohana", "Narwana", "Mandi Dabwali", "Charkhi Dadri", "Shahbad", "Pehowa", "Samalkha", "Pinjore", "Ladwa", "Sohna", "Safidon", "Taraori", "Mahendragarh", "Ratia", "Rania", "Sarsod"],
+            "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Tiruchirappalli", "Salem", "Tirunelveli", "Tiruppur", "Ranipet", "Nagercoil", "Thanjavur", "Vellore", "Kancheepuram", "Erode", "Tiruvannamalai", "Pollachi", "Rajapalayam", "Sivakasi", "Pudukkottai", "Neyveli (TS)", "Nagapattinam", "Viluppuram", "Tiruchengode", "Vaniyambadi", "Theni Allinagaram", "Udhagamandalam", "Aruppukkottai", "Paramakudi", "Arakkonam", "Virudhachalam", "Srivilliputhur", "Tindivanam", "Virudhunagar", "Karur", "Valparai", "Sankarankovil", "Tenkasi", "Palani", "Pattukkottai", "Tirupathur", "Ramanathapuram", "Udumalaipettai", "Gobichettipalayam", "Thiruvarur", "Thiruvallur", "Panruti", "Namakkal", "Thirumangalam", "Vikramasingapuram", "Nellikuppam", "Rasipuram", "Tiruttani", "Nandivaram-Guduvancheri", "Periyakulam", "Pernampattu", "Vellakoil", "Sivaganga", "Vadalur", "Rameshwaram", "Tiruvethipuram", "Perambalur", "Usilampatti", "Vedaranyam", "Sathyamangalam", "Puliyankudi", "Nanjikottai", "Thuraiyur", "Sirkali", "Tiruchendur", "Periyasemur", "Sattur", "Vandavasi", "Tharamangalam", "Tirukkoyilur", "Oddanchatram", "Palladam", "Vadakkuvalliyur", "Tirukalukundram", "Uthamapalayam", "Surandai", "Sankari", "Shenkottai", "Vadipatti", "Sholingur", "Tirupathur", "Manachanallur", "Viswanatham", "Polur", "Panagudi", "Uthiramerur", "Thiruthuraipoondi", "Pallapatti", "Ponneri", "Lalgudi", "Natham", "Unnamalaikadai", "P.N.Patti", "Tharangambadi", "Tittakudi", "Pacode", "O' Valley", "Suriyampalayam", "Sholavandan", "Thammampatti", "Namagiripettai", "Peravurani", "Parangipettai", "Pudupattinam", "Pallikonda", "Sivagiri", "Punjaipugalur", "Padmanabhapuram", "Thirupuvanam"],
+            "Madhya Pradesh": ["Indore", "Bhopal", "Jabalpur", "Gwalior", "Ujjain", "Sagar", "Ratlam", "Satna", "Murwara (Katni)", "Morena", "Singrauli", "Rewa", "Vidisha", "Ganjbasoda", "Shivpuri", "Mandsaur", "Neemuch", "Nagda", "Itarsi", "Sarni", "Sehore", "Mhow Cantonment", "Seoni", "Balaghat", "Ashok Nagar", "Tikamgarh", "Shahdol", "Pithampur", "Alirajpur", "Mandla", "Sheopur", "Shajapur", "Panna", "Raghogarh-Vijaypur", "Sendhwa", "Sidhi", "Pipariya", "Shujalpur", "Sironj", "Pandhurna", "Nowgong", "Mandideep", "Sihora", "Raisen", "Lahar", "Maihar", "Sanawad", "Sabalgarh", "Umaria", "Porsa", "Narsinghgarh", "Malaj Khand", "Sarangpur", "Mundi", "Nepanagar", "Pasan", "Mahidpur", "Seoni-Malwa", "Rehli", "Manawar", "Rahatgarh", "Panagar", "Wara Seoni", "Tarana", "Sausar", "Rajgarh", "Niwari", "Mauganj", "Manasa", "Nainpur", "Prithvipur", "Sohagpur", "Nowrozabad (Khodargama)", "Shamgarh", "Maharajpur", "Multai", "Pali", "Pachore", "Rau", "Mhowgaon", "Vijaypur", "Narsinghgarh"],
+            "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Thane", "Nashik", "Kalyan-Dombivali", "Vasai-Virar", "Solapur", "Mira-Bhayandar", "Bhiwandi", "Amravati", "Nanded-Waghala", "Sangli", "Malegaon", "Akola", "Latur", "Dhule", "Ahmednagar", "Ichalkaranji", "Parbhani", "Panvel", "Yavatmal", "Achalpur", "Osmanabad", "Nandurbar", "Satara", "Wardha", "Udgir", "Aurangabad", "Amalner", "Akot", "Pandharpur", "Shrirampur", "Parli", "Washim", "Ambejogai", "Manmad", "Ratnagiri", "Uran Islampur", "Pusad", "Sangamner", "Shirpur-Warwade", "Malkapur", "Wani", "Lonavla", "Talegaon Dabhade", "Anjangaon", "Umred", "Palghar", "Shegaon", "Ozar", "Phaltan", "Yevla", "Shahade", "Vita", "Umarkhed", "Warora", "Pachora", "Tumsar", "Manjlegaon", "Sillod", "Arvi", "Nandura", "Vaijapur", "Wadgaon Road", "Sailu", "Murtijapur", "Tasgaon", "Mehkar", "Yawal", "Pulgaon", "Nilanga", "Wai", "Umarga", "Paithan", "Rahuri", "Nawapur", "Tuljapur", "Morshi", "Purna", "Satana", "Pathri", "Sinnar", "Uchgaon", "Uran", "Pen", "Karjat", "Manwath", "Partur", "Sangole", "Mangrulpir", "Risod", "Shirur", "Savner", "Sasvad", "Pandharkaoda", "Talode", "Shrigonda", "Shirdi", "Raver", "Mukhed", "Rajura", "Vadgaon Kasba", "Tirora", "Mahad", "Lonar", "Sawantwadi", "Pathardi", "Pauni", "Ramtek", "Mul", "Soyagaon", "Mangalvedhe", "Narkhed", "Shendurjana", "Patur", "Mhaswad", "Loha", "Nandgaon", "Warud"],
+            "Uttar Pradesh": ["Lucknow", "Kanpur", "Firozabad", "Agra", "Meerut", "Varanasi", "Allahabad", "Amroha", "Moradabad", "Aligarh", "Saharanpur", "Noida", "Loni", "Jhansi", "Shahjahanpur", "Rampur", "Modinagar", "Hapur", "Etawah", "Sambhal", "Orai", "Bahraich", "Unnao", "Rae Bareli", "Lakhimpur", "Sitapur", "Lalitpur", "Pilibhit", "Chandausi", "Hardoi ", "Azamgarh", "Khair", "Sultanpur", "Tanda", "Nagina", "Shamli", "Najibabad", "Shikohabad", "Sikandrabad", "Shahabad, Hardoi", "Pilkhuwa", "Renukoot", "Vrindavan", "Ujhani", "Laharpur", "Tilhar", "Sahaswan", "Rath", "Sherkot", "Kalpi", "Tundla", "Sandila", "Nanpara", "Sardhana", "Nehtaur", "Seohara", "Padrauna", "Mathura", "Thakurdwara", "Nawabganj", "Siana", "Noorpur", "Sikandra Rao", "Puranpur", "Rudauli", "Thana Bhawan", "Palia Kalan", "Zaidpur", "Nautanwa", "Zamania", "Shikarpur, Bulandshahr", "Naugawan Sadat", "Fatehpur Sikri", "Shahabad, Rampur", "Robertsganj", "Utraula", "Sadabad", "Rasra", "Lar", "Lal Gopalganj Nindaura", "Sirsaganj", "Pihani", "Shamsabad, Agra", "Rudrapur", "Soron", "SUrban Agglomerationr", "Samdhan", "Sahjanwa", "Rampur Maniharan", "Sumerpur", "Shahganj", "Tulsipur", "Tirwaganj", "PurqUrban Agglomerationzi", "Shamsabad, Farrukhabad", "Warhapur", "Powayan", "Sandi", "Achhnera", "Naraura", "Nakur", "Sahaspur", "Safipur", "Reoti", "Sikanderpur", "Saidpur", "Sirsi", "Purwa", "Parasi", "Lalganj", "Phulpur", "Shishgarh", "Sahawar", "Samthar", "Pukhrayan", "Obra", "Niwai", "Mirzapur"],
+            "Delhi": ["Delhi", "New Delhi"],
+            "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Bhavnagar", "Jamnagar", "Nadiad", "Porbandar", "Anand", "Morvi", "Mahesana", "Bharuch", "Vapi", "Navsari", "Veraval", "Bhuj", "Godhra", "Palanpur", "Valsad", "Patan", "Deesa", "Amreli", "Anjar", "Dhoraji", "Khambhat", "Mahuva", "Keshod", "Wadhwan", "Ankleshwar", "Savarkundla", "Kadi", "Visnagar", "Upleta", "Una", "Sidhpur", "Unjha", "Mangrol", "Viramgam", "Modasa", "Palitana", "Petlad", "Kapadvanj", "Sihor", "Wankaner", "Limbdi", "Mandvi", "Thangadh", "Vyara", "Padra", "Lunawada", "Rajpipla", "Vapi", "Umreth", "Sanand", "Rajula", "Radhanpur", "Mahemdabad", "Ranavav", "Tharad", "Mansa", "Umbergaon", "Talaja", "Vadnagar", "Manavadar", "Salaya", "Vijapur", "Pardi", "Rapar", "Songadh", "Lathi", "Adalaj", "Chhapra", "Gandhinagar"],
+            "Karnataka": ["Bengaluru", "Hubli-Dharwad", "Belagavi", "Mangaluru", "Davanagere", "Ballari", "Mysore", "Tumkur", "Shivamogga", "Raayachuru", "Robertson Pet", "Kolar", "Mandya", "Udupi", "Chikkamagaluru", "Karwar", "Ranebennuru", "Ranibennur", "Ramanagaram", "Gokak", "Yadgir", "Rabkavi Banhatti", "Shahabad", "Sirsi", "Sindhnur", "Tiptur", "Arsikere", "Nanjangud", "Sagara", "Sira", "Puttur", "Athni", "Mulbagal", "Surapura", "Siruguppa", "Mudhol", "Sidlaghatta", "Shahpur", "Saundatti-Yellamma", "Wadi", "Manvi", "Nelamangala", "Lakshmeshwar", "Ramdurg", "Nargund", "Tarikere", "Malavalli", "Savanur", "Lingsugur", "Vijayapura", "Sankeshwara", "Madikeri", "Talikota", "Sedam", "Shikaripur", "Mahalingapura", "Mudalagi", "Muddebihal", "Pavagada", "Malur", "Sindhagi", "Sanduru", "Afzalpur", "Maddur", "Madhugiri", "Tekkalakote", "Terdal", "Mudabidri", "Magadi", "Navalgund", "Shiggaon", "Shrirangapattana", "Sindagi", "Sakaleshapura", "Srinivaspur", "Ron", "Mundargi", "Sadalagi", "Piriyapatna", "Adyar"],
+            "Rajasthan": ["Jaipur", "Jodhpur", "Bikaner", "Udaipur", "Ajmer", "Bhilwara", "Alwar", "Bharatpur", "Pali", "Barmer", "Sikar", "Tonk", "Sadulpur", "Sawai Madhopur", "Nagaur", "Makrana", "Sujangarh", "Sardarshahar", "Ladnu", "Ratangarh", "Nokha", "Nimbahera", "Suratgarh", "Rajsamand", "Lachhmangarh", "Rajgarh (Churu)", "Nasirabad", "Nohar", "Phalodi", "Nathdwara", "Pilani", "Merta City", "Sojat", "Neem-Ka-Thana", "Sirohi", "Pratapgarh", "Rawatbhata", "Sangaria", "Lalsot", "Pilibanga", "Pipar City", "Taranagar", "Vijainagar, Ajmer", "Sumerpur", "Sagwara", "Ramganj Mandi", "Lakheri", "Udaipurwati", "Losal", "Sri Madhopur", "Ramngarh", "Rawatsar", "Rajakhera", "Shahpura", "Shahpura", "Raisinghnagar", "Malpura", "Nadbai", "Sanchore", "Nagar", "Rajgarh (Alwar)", "Sheoganj", "Sadri", "Todaraisingh", "Todabhim", "Reengus", "Rajaldesar", "Sadulshahar", "Sambhar", "Prantij", "Mount Abu", "Mangrol", "Phulera", "Mandawa", "Pindwara", "Mandalgarh", "Takhatgarh"],
+            "West Bengal": ["Kolkata", "Siliguri", "Asansol", "Raghunathganj", "Kharagpur", "Naihati", "English Bazar", "Baharampur", "Hugli-Chinsurah", "Raiganj", "Jalpaiguri", "Santipur", "Balurghat", "Medinipur", "Habra", "Ranaghat", "Bankura", "Nabadwip", "Darjiling", "Purulia", "Arambagh", "Tamluk", "AlipurdUrban Agglomerationr", "Suri", "Jhargram", "Gangarampur", "Rampurhat", "Kalimpong", "Sainthia", "Taki", "Murshidabad", "Memari", "Paschim Punropara", "Tarakeswar", "Sonamukhi", "PandUrban Agglomeration", "Mainaguri", "Malda", "Panchla", "Raghunathpur", "Mathabhanga", "Monoharpur", "Srirampore", "Adra"],
+            "Bihar": ["Patna", "Gaya", "Bhagalpur", "Muzaffarpur", "Darbhanga", "Arrah", "Begusarai", "Chhapra", "Katihar", "Munger", "Purnia", "Saharsa", "Sasaram", "Hajipur", "Dehri-on-Sone", "Bettiah", "Motihari", "Bagaha", "Siwan", "Kishanganj", "Jamalpur", "Buxar", "Jehanabad", "Aurangabad", "Lakhisarai", "Nawada", "Jamui", "Sitamarhi", "Araria", "Gopalganj", "Madhubani", "Masaurhi", "Samastipur", "Mokameh", "Supaul", "Dumraon", "Arwal", "Forbesganj", "BhabUrban Agglomeration", "Narkatiaganj", "Naugachhia", "Madhepura", "Sheikhpura", "Sultanganj", "Raxaul Bazar", "Ramnagar", "Mahnar Bazar", "Warisaliganj", "Revelganj", "Rajgir", "Sonepur", "Sherghati", "Sugauli", "Makhdumpur", "Maner", "Rosera", "Nokha", "Piro", "Rafiganj", "Marhaura", "Mirganj", "Lalganj", "Murliganj", "Motipur", "Manihari", "Sheohar", "Maharajganj", "Silao", "Barh", "Asarganj"],
+            "Jharkhand": ["Dhanbad", "Ranchi", "Jamshedpur", "Bokaro Steel City", "Deoghar", "Phusro", "Adityapur", "Hazaribag", "Giridih", "Ramgarh", "Jhumri Tilaiya", "Saunda", "Sahibganj", "Medininagar (Daltonganj)", "Chaibasa", "Chatra", "Gumia", "Dumka", "Madhupur", "Chirkunda", "Pakaur", "Simdega", "Musabani", "Mihijam", "Patratu", "Lohardaga", "Tenu dam-cum-Kathhara"],
+            "Andhra Pradesh": ["Visakhapatnam", "Vijayawada", "Guntur", "Nellore", "Kurnool", "Rajahmundry", "Kakinada", "Tirupati", "Anantapur", "Kadapa", "Vizianagaram", "Eluru", "Ongole", "Nandyal", "Machilipatnam", "Adoni", "Tenali", "Chittoor", "Hindupur", "Proddatur", "Bhimavaram", "Madanapalle", "Guntakal", "Dharmavaram", "Gudivada", "Srikakulam", "Narasaraopet", "Rajampet", "Tadpatri", "Tadepalligudem", "Chilakaluripet", "Yemmiganur", "Kadiri", "Chirala", "Anakapalle", "Kavali", "Palacole", "Sullurpeta", "Tanuku", "Rayachoti", "Srikalahasti", "Bapatla", "Naidupet", "Nagari", "Gudur", "Vinukonda", "Narasapuram", "Nuzvid", "Markapur", "Ponnur", "Kandukur", "Bobbili", "Rayadurg", "Samalkot", "Jaggaiahpet", "Tuni", "Amalapuram", "Bheemunipatnam", "Venkatagiri", "Sattenapalle", "Pithapuram", "Palasa Kasibugga", "Parvathipuram", "Macherla", "Gooty", "Salur", "Mandapeta", "Jammalamadugu", "Peddapuram", "Punganur", "Nidadavole", "Repalle", "Ramachandrapuram", "Kovvur", "Tiruvuru", "Uravakonda", "Narsipatnam", "Yerraguntla", "Pedana", "Puttur", "Renigunta", "Rajam", "Srisailam Project (Right Flank Colony) Township"],
+            "Telangana": ["Hyderabad", "Warangal", "Nizamabad", "Karimnagar", "Ramagundam", "Khammam", "Mahbubnagar", "Mancherial", "Adilabad", "Suryapet", "Jagtial", "Miryalaguda", "Nirmal", "Kamareddy", "Kothagudem", "Bodhan", "Palwancha", "Mandamarri", "Koratla", "Sircilla", "Tandur", "Siddipet", "Wanaparthy", "Kagaznagar", "Gadwal", "Sangareddy", "Bellampalle", "Bhongir", "Vikarabad", "Jangaon", "Bhadrachalam", "Bhainsa", "Farooqnagar", "Medak", "Narayanpet", "Sadasivpet", "Yellandu", "Manuguru", "Kyathampalle", "Nagarkurnool"],
+            "Kerala": ["Thiruvananthapuram", "Kochi", "Kozhikode", "Kollam", "Thrissur", "Palakkad", "Alappuzha", "Malappuram", "Ponnani", "Vatakara", "Kanhangad", "Taliparamba", "Koyilandy", "Neyyattinkara", "Kayamkulam", "Nedumangad", "Kannur", "Tirur", "Kottayam", "Kasaragod", "Kunnamkulam", "Ottappalam", "Thiruvalla", "Thodupuzha", "Chalakudy", "Changanassery", "Punalur", "Nilambur", "Cherthala", "Perinthalmanna", "Mattannur", "Shoranur", "Varkala", "Paravoor", "Pathanamthitta", "Peringathur", "Attingal", "Kodungallur", "Pappinisseri", "Chittur-Thathamangalam", "Muvattupuzha", "Adoor", "Mavelikkara", "Mavoor", "Perumbavoor", "Vaikom", "Palai", "Panniyannur", "Guruvayoor", "Puthuppally", "Panamattom"],
+            "Punjab": ["Ludhiana", "Patiala", "Amritsar", "Jalandhar", "Bathinda", "Pathankot", "Hoshiarpur", "Batala", "Moga", "Malerkotla", "Khanna", "Mohali", "Barnala", "Firozpur", "Phagwara", "Kapurthala", "Zirakpur", "Kot Kapura", "Faridkot", "Muktsar", "Rajpura", "Sangrur", "Fazilka", "Gurdaspur", "Kharar", "Gobindgarh", "Mansa", "Malout", "Nabha", "Tarn Taran", "Jagraon", "Sunam", "Dhuri", "Firozpur Cantt.", "Sirhind Fatehgarh Sahib", "Rupnagar", "Jalandhar Cantt.", "Samana", "Nawanshahr", "Rampura Phul", "Nangal", "Nakodar", "Zira", "Patti", "Raikot", "Longowal", "Urmar Tanda", "Morinda, India", "Phillaur", "Pattran", "Qadian", "Sujanpur", "Mukerian", "Talwara"],
+            "Assam": ["Guwahati", "Silchar", "Dibrugarh", "Nagaon", "Tinsukia", "Jorhat", "Bongaigaon City", "Dhubri", "Diphu", "North Lakhimpur", "Tezpur", "Karimganj", "Sibsagar", "Goalpara", "Barpeta", "Lanka", "Lumding", "Mankachar", "Nalbari", "Rangia", "Margherita", "Mangaldoi", "Silapathar", "Mariani", "Marigaon"],
+            "Odisha": ["Bhubaneswar", "Cuttack", "Raurkela", "Brahmapur", "Sambalpur", "Puri", "Baleshwar Town", "Baripada Town", "Bhadrak", "Balangir", "Jharsuguda", "Bargarh", "Paradip", "Bhawanipatna", "Dhenkanal", "Barbil", "Kendujhar", "Sunabeda", "Rayagada", "Jatani", "Byasanagar", "Kendrapara", "Rajagangapur", "Parlakhemundi", "Talcher", "Sundargarh", "Phulabani", "Pattamundai", "Titlagarh", "Nabarangapur", "Soro", "Malkangiri", "Rairangpur", "Tarbha"],
+            "Chhattisgarh": ["Raipur", "Bhilai Nagar", "Korba", "Bilaspur", "Durg", "Rajnandgaon", "Jagdalpur", "Raigarh", "Ambikapur", "Mahasamund", "Dhamtari", "Chirmiri", "Bhatapara", "Dalli-Rajhara", "Naila Janjgir", "Tilda Newra", "Mungeli", "Manendragarh", "Sakti"],
+            "Jammu and Kashmir": ["Srinagar", "Jammu", "Baramula", "Anantnag", "Sopore", "KathUrban Agglomeration", "Rajauri", "Punch", "Udhampur"],
+            "Manipur": ["Imphal", "Thoubal", "Lilong", "Mayang Imphal"],
+            "Meghalaya": ["Shillong", "Tura", "Nongstoin"],
+            "Himachal Pradesh": ["Shimla", "Dharamshala", "Mandi", "Solan", "Nahan", "Sundarnagar", "Palampur", "Kullu"],
+            "Himachal Praddesh": ["Manali"],
+            "Arunachal Pradesh": ["Naharlagun", "Pasighat"],
+            "Goa": ["Marmagao", "Panaji", "Margao", "Mapusa"],
+            "Dadra and Nagar Haveli": ["Silvassa"],
+            "Puducherry": ["Pondicherry", "Karaikal", "Yanam", "Mahe"],
+            "Uttarakhand": ["Dehradun", "Hardwar", "Haldwani-cum-Kathgodam", "Srinagar", "Kashipur", "Roorkee", "Rudrapur", "Rishikesh", "Ramnagar", "Pithoragarh", "Manglaur", "Nainital", "Mussoorie", "Tehri", "Pauri", "Nagla", "Sitarganj", "Bageshwar"],
+            "Mizoram": ["Aizawl", "Lunglei", "Saiha"],
+            "Nagaland": ["Dimapur", "Kohima", "Zunheboto", "Tuensang", "Wokha", "Mokokchung"],
+            "Tripura": ["Agartala", "Udaipur", "Dharmanagar", "Pratapgarh", "Kailasahar", "Belonia", "Khowai"],
+            "Chandigarh": ["Chandigarh"]
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            // Populate State Dropdown
+            const stateSelect = document.getElementById('state');
+            Object.keys(stateCityData).sort().forEach(state => {
+                const option = document.createElement('option');
+                option.value = state;
+                option.textContent = state;
+                stateSelect.appendChild(option);
+            });
+
+            // Populate City Dropdown on State Change
+            stateSelect.addEventListener('change', function () {
+                const citySelect = document.getElementById('city');
+                citySelect.innerHTML = '<option value="">-- Select City --</option>';
+
+                if (this.value) {
+                    const cities = stateCityData[this.value] || [];
+                    cities.sort().forEach(city => {
+                        const option = document.createElement('option');
+                        option.value = city;
+                        option.textContent = city;
+                        citySelect.appendChild(option);
+                    });
+                }
+            });
+
+            // Image preview functionality
+            function previewImage(inputId, imgId) {
+                const input = document.getElementById(inputId);
+                input.addEventListener('change', function () {
+                    const file = this.files && this.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function (evt) {
+                            const img = document.getElementById(imgId);
+                            img.src = evt.target.result;
+                            img.style.display = "block";
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        document.getElementById(imgId).style.display = "none";
+                    }
+                });
+            }
+
+            previewImage('img1', 'preview1');
+            previewImage('img2', 'preview2');
+            previewImage('img3', 'preview3');
+
+            // Form submission handler
+            document.getElementById("flatmateForm").addEventListener("submit", async function (e) {
+                e.preventDefault();
+                const form = e.target;
+                const formData = new FormData(form);
+
+                // Remove any existing images field if present
+                formData.delete("images");
+
+                // Correctly append images one by one
+                ["img1", "img2", "img3"].forEach(id => {
+                    const input = document.getElementById(id);
+                    if (input.files && input.files.length > 0) {
+                        formData.append('images', input.files[0]);
+                    }
+                });
+
+                try {
+                    const response = await fetch('http://localhost:3000/api/post-requirement', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const data = await response.json();
+                    const successDiv = document.getElementById("form-success");
+                    if (response.ok) {
+                        successDiv.textContent = "✅ Requirement submitted successfully!";
+                    } else {
+                        successDiv.textContent = "❌ There was an error submitting your requirement.";
+                    }
+                    successDiv.style.display = "block";
+                    setTimeout(() => { successDiv.style.display = "none"; }, 3000);
+                } catch (err) {
+                    const successDiv = document.getElementById("form-success");
+                    successDiv.textContent = "❌ Network error!";
+                    successDiv.style.display = "block";
+                    setTimeout(() => { successDiv.style.display = "none"; }, 3000);
+                }
+            });
+
+
+        });
+
+    </script>
+</body>
+
+</html>

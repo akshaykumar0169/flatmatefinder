@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Dashboard - Flatmate Finder</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+  body {
+    background: #f6faff;
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+  }
+
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 32px;
+    background: #4CAF50;
+    color: #fff;
+    font-size: 1.4rem;
+  }
+
+  .navbar-left .logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .logo-text {
+    margin-left: 8px;
+    font-size: 1.4rem;
+    font-weight: bold;
+  }
+
+  /* Extra from 2nd block */
+  .logo-bold {
+    font-weight: 800;
+    font-size: 1.4rem;
+  }
+
+  .profile-menu {
+    position: relative;
+    list-style: none;
+  }
+
+  .profile-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #1a7a87;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+    color: white;
+  }
+
+  .profile-dropdown {
+    display: none;
+    position: absolute;
+    top: 45px;
+    right: 0;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    min-width: 160px;
+    z-index: 10;
+  }
+
+  .profile-dropdown a {
+    display: block;
+    padding: 10px 14px;
+    text-decoration: none;
+    color: #333;
+    font-size: 15px;
+  }
+
+  .profile-dropdown a:hover {
+    background: #f1f1f1;
+  }
+
+  /* Dropdown toggle options (kept both) */
+  .profile-menu.active .profile-dropdown {
+    display: block;
+  }
+
+  .profile-menu:hover .profile-dropdown {
+    display: block;
+  }
+
+  /* Extra feature styles (from 2nd block) */
+  .feature-section {
+    padding: 36px 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    max-width: 1100px;
+    width: 92vw;
+  }
+
+  .feature-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 14px rgba(30, 64, 175, 0.07);
+    padding: 36px 28px;
+    text-align: center;
+    transition: box-shadow 0.3s, transform 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .feature-card:hover {
+    box-shadow: 0 8px 30px rgba(30, 64, 175, 0.18);
+    transform: translateY(-8px) scale(1.04);
+  }
+
+  .feature-icon {
+    font-size: 39px;
+    margin-bottom: 14px;
+  }
+
+  .feature-title {
+    color: #045c68;
+    font-size: 23px;
+    margin-bottom: 11px;
+    font-weight: 700;
+  }
+
+  .feature-card p {
+    color: #364969;
+    font-size: 18px;
+    margin-bottom: 28px;
+  }
+
+  .feature-btn {
+    padding: 10px 22px;
+    background: #42b845;
+    color: #fff;
+    font-size: 1.08rem;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    margin-top: auto;
+    font-weight: 600;
+    box-shadow: 0 1px 4px rgba(30, 64, 100, 0.12);
+    transition: background 0.19s;
+    text-decoration: none;
+  }
+
+  .feature-btn:hover {
+    background: #30932F;
+  }
+
+  footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+    color: #555;
+    font-size: 14px;
+  }
+
+  @media (max-width: 750px) {
+    .feature-grid {
+      grid-template-columns: 1fr;
+      gap: 22px;
+    }
+
+    .feature-card {
+      padding: 28px 12px;
+    }
+  }
+</style>
+
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="navbar-left">
+      <a href="user-dashboard.html" class="logo">
+        <span class="home-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+            class="bi bi-house-door-fill" viewBox="0 0 16 16">
+            <path
+              d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5" />
+          </svg>
+        </span>
+        <span class="logo-text">Flatmate <span class="logo-text">Finder</span></span>
+      </a>
+    </div>
+
+    <ul id="navbar-links">
+      <li id="profile-menu" class="profile-menu">
+        <div class="profile-icon" id="profile-icon">👤</div>
+        <div class="profile-dropdown">
+          <a href="profile.html">My Profile</a>
+          <!-- <a href="my-posts.html">My Posts</a> -->
+          <a href="login.html" id="logout-btn">Logout</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="container main-bg">
+    <header class="header">
+      <h2>Welcome, <span id="userName">User</span> 👋</h2>
+      <p class="subtitle">Manage your flatmate preferences, listings, and matches.</p>
+    </header>
+
+    <div class="feature-section">
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon">📝</div>
+          <h3 class="feature-title">Post a Flatmate Requirement</h3>
+          <p>Share your location, budget, and preferences.</p>
+          <a href="post-requirement.html" class="feature-btn">Post Now</a>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🔍</div>
+          <h3 class="feature-title">Search Flatmate Listings</h3>
+          <p>Explore people who are looking for roommates.</p>
+          <a href="search-listings.html" class="feature-btn">Search Listings</a>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">&#128490;</div>
+          <h3 class="feature-title">Chat with Matches</h3>
+          <p>Message others and connect securely.</p>
+          <a href="#" class="feature-btn">Open Chat</a>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">&#128203;</div>
+          <h3 class="feature-title">My Posts</h3>
+          <p>View or edit your flatmate requirements.</p>
+          <a href="my-posts.html" class="feature-btn">View My Posts</a>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>&copy; 2025 Flatmate Finder. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Dropdown toggle logic
+    const profileMenu = document.getElementById("profile-menu");
+    const profileIcon = document.getElementById("profile-icon");
+
+    profileIcon.addEventListener("click", (e) => {
+      e.stopPropagation(); // prevent bubbling
+      profileMenu.classList.toggle("active");
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", (e) => {
+      if (!profileMenu.contains(e.target)) {
+        profileMenu.classList.remove("active");
+      }
+    });
+  </script>
+</body>
+
+</html>

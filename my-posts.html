@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Posts | Flatmate Finder</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #4CAF50;
+            margin-bottom: 1rem;
+        }
+
+        .post {
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+        }
+
+        .post:last-child {
+            border-bottom: none;
+        }
+
+        .post h3 {
+            margin: 0;
+            color: #333;
+        }
+
+        .post p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .no-posts {
+            text-align: center;
+            color: #888;
+            padding: 2rem;
+        }
+
+        .back-btn {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .back-btn a {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        .back-btn a:hover {
+            background-color: #388e3c;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="navbar-left">
+            <a href="user-dashboard.html" class="logo">
+                <span class="home-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                        class="bi bi-house-door-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5" />
+                    </svg>
+                </span>
+                <span class="logo-text">Flatmate <span class="logo-text">Finder</span></span>
+            </a>
+        </div>
+
+        <ul id="navbar-links">
+            <li><a href="user-dashboard.html">Dashboard</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h2>My Flatmate Posts</h2>
+        <div id="myPostsContainer"></div>
+
+        <div class="back-btn">
+            <a href="user-dashboard.html">← Back to Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const userEmail = localStorage.getItem("loggedInUserEmail");
+            const myPostsContainer = document.getElementById("myPostsContainer");
+
+            if (!userEmail) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            fetch(`http://localhost:3000/api/my-posts?email=${encodeURIComponent(userEmail)}`)
+                .then(response => response.json())
+                .then(posts => {
+                    if (!Array.isArray(posts) || posts.length === 0) {
+                        myPostsContainer.innerHTML = `<div class="no-posts">You haven't posted any requirements yet.</div>`;
+                    } else {
+                        posts.forEach(post => {
+                            const div = document.createElement("div");
+                            div.className = "post";
+                            let imagesHtml = "";
+                            if (post.images && Array.isArray(post.images) && post.images.length > 0) {
+                                imagesHtml = post.images.map(url =>
+                                    `<img src="${url}" style="width:70px;height:70px;object-fit:cover;border-radius:8px;margin:4px;" alt="Flatmate Image">`
+                                ).join('');
+                            }
+
+                            div.innerHTML = `
+                        <h3>${post.title || "Flatmate Requirement"}</h3>
+                        <div>${imagesHtml}</div>
+                        <p><strong>Location:</strong> ${post.location || ""}</p>
+                        <p><strong>Budget:</strong> ₹${post.price || post.budget || ""}</p>
+                        <p><strong>Furnishing:</strong> ${post.furnishing || ""}</p>
+                        <p><strong>State/City:</strong> ${post.state || ""}, ${post.city || ""}</p>
+                        <p><strong>Preferred Gender:</strong> ${post.gender || ""}</p>
+                        <p><strong>Preferences:</strong> ${(post.prefs || []).join(', ')}</p>
+                        <p><strong>Additional Info:</strong> ${post.description || post.notes || ""}</p>
+                        <p><small>Posted on: ${post.timestamp ? new Date(post.timestamp).toLocaleString() : ""}</small></p>
+                    `;
+                            myPostsContainer.appendChild(div);
+                        });
+                    }
+                })
+                .catch(error => {
+                    myPostsContainer.innerHTML = `<div class="no-posts">Error fetching posts. Please try again later.</div>`;
+                });
+        });
+
+    </script>
+
+</body>
+
+</html>
